@@ -4,7 +4,7 @@ const newQuoteBtn = document.getElementById("newQuote");
 const newQuote = document.querySelector("#newQuoteText");
 const newCategory = document.querySelector("#newQuoteCategory");
 
-const quotes = [
+const quotes =JSON.parse(localStorage.getItem("quotes")) || [
   {inspirational: [
     "Believe you can and you're halfway there.",
     "The only way to do great work is to love what you do."
@@ -62,18 +62,23 @@ function createAddQuoteForm(){
   
     if(categoryExists){
       if(quotes[categoryIndex][quoteCategory].includes(newQuote.value)){
-        alert("This quote already exists")
+        console.log("This quote already exists");
       }else{
         quotes[categoryIndex][quoteCategory].push(newQuote.value);
+        localStorage.setItem("quotes", JSON.stringify(quotes));
       }
       
     }else{
       const newQuoteObj = {[quoteCategory]: [newQuote.value]};
       quotes.push(newQuoteObj);
+      localStorage.setItem("quotes", JSON.stringify(quotes));
 
     }
   }
   
+  newQuote.value = "";
+  newCategory.value = "";
+  newQuote.focus();
 }
 
 newQuoteBtn.addEventListener("click", () =>{
@@ -82,3 +87,46 @@ newQuoteBtn.addEventListener("click", () =>{
 
 });
 
+const downloadBtn = document.querySelector("#downloadBtn");
+const fileInput = document.querySelector("#importFile");
+
+
+function downloadQuotes(){
+  const jsonData = JSON.stringify(quotes, null, 2);
+  
+  const blob = new Blob([jsonData], {type: "application/json"});
+
+  const link = document.createElement("a");
+
+  link.href = URL.createObjectURL(blob);
+
+  link.download = "quotes.json";
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+  
+}
+
+downloadBtn.addEventListener("click", downloadQuotes);
+
+function importFromJsonFile(event){
+  const file = event.target.files[0]; //get the chosen file
+
+  const reader = new FileReader();
+
+  reader.onload = function(e){
+    const importedQuotes  = JSON.parse(e.target.result);
+    quotes.push(...importedQuotes);
+    localStorage.setItem("quotes", importedQuotes);
+  }
+
+  reader.readAsText(file);
+
+}
+
+fileInput.addEventListener("change", (event) => {
+  importFromJsonFile(event);
+});
