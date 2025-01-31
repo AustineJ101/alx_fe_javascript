@@ -154,7 +154,7 @@ function populateCategories(){
 populateCategories();
 
 function filterQuotes(event){
-  const category = event.target.value;
+  const selectedCategory = event.target.value;
   let categoryIndex;
   quotes.forEach((obj, index) => {
     if(Object.keys(obj)[0] == category){
@@ -165,7 +165,7 @@ function filterQuotes(event){
 
   quoteDisplay.innerHTML = "";
 
-  const quoteArr = quotes[categoryIndex][category];
+  const quoteArr = quotes[categoryIndex][selectedCategory];
 
   quoteArr.forEach(quote => {
     const para = document.createElement("p");
