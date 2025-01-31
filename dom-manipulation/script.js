@@ -141,7 +141,7 @@ function populateCategories(){
   firstOption.textContent = "All Categories";
   categoryFilter.appendChild(firstOption);
 
-  quotes.forEach(obj => {
+  quotes.map(obj => {
     const category  = Object.keys(obj)[0];
     const option = document.createElement("option");
     option.value = category;
