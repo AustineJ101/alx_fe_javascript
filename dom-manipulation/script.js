@@ -36,15 +36,17 @@ function showRandomQuote(array){
 
   const randomQuote = array[categoryIndex][category][quoteIndex];
   
-  quoteDisplay.textContent = randomQuote;
+  const para = document.createElement("p");
+  para.textContent = randomQuote;
+  quoteDisplay.innerHTML = "";
+  quoteDisplay.appendChild(para);
   
 }
 
 function addQuote(){
 
   if(newQuote.value && newCategory.value){
-    
-  console.log("Adding...");
+
     let categoryExists = false;
     let categoryIndex;
     let quoteCategory = newCategory.value.toLowerCase();
