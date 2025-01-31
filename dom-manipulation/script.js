@@ -26,7 +26,7 @@ const quotes = [
   ]}
 ];
 
-function displayRandomQuote(array){
+function showRandomQuote(array){
   //Generate a random category index
   const categoryIndex = Math.floor(Math.random() * array.length);
   //Get the category name 
@@ -76,7 +76,7 @@ function addQuote(){
 
 newQuoteBtn.addEventListener("click", () =>{
 
-  displayRandomQuote(quotes);
+  showRandomQuote(quotes);
 
 });
 
