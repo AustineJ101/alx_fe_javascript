@@ -36,7 +36,7 @@ function showRandomQuote(array){
 
   const randomQuote = array[categoryIndex][category][quoteIndex];
   
-  quoteDisplay.innerHTML = randomQuote;
+  quoteDisplay.textContent = randomQuote;
   
 }
 
