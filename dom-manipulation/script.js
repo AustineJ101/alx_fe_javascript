@@ -43,7 +43,7 @@ function showRandomQuote(array){
   
 }
 
-function addQuote(){
+function createAddQuoteForm(){
 
   if(newQuote.value && newCategory.value){
 
