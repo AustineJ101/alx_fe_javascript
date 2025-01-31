@@ -72,6 +72,7 @@ function createAddQuoteForm(){
       const newQuoteObj = {[quoteCategory]: [newQuote.value]};
       quotes.push(newQuoteObj);
       localStorage.setItem("quotes", JSON.stringify(quotes));
+      populateCategories();
 
     }
   }
@@ -115,7 +116,7 @@ downloadBtn.addEventListener("click", downloadQuotes);
 function importFromJsonFile(event){
   const file = event.target.files[0]; //get the chosen file
 
-  const reader = new FileReader();
+  const reader = new FileReader();// new instance of file reader
 
   reader.onload = function(e){
     const importedQuotes  = JSON.parse(e.target.result);
@@ -130,3 +131,50 @@ function importFromJsonFile(event){
 fileInput.addEventListener("change", (event) => {
   importFromJsonFile(event);
 });
+
+const categoryFilter = document.querySelector("#categoryFilter");
+
+function populateCategories(){
+  categoryFilter.innerHTML = "";
+  const firstOption = document.createElement("option");
+  firstOption.value = "All";
+  firstOption.textContent = "All Categories";
+  categoryFilter.appendChild(firstOption);
+
+  quotes.forEach(obj => {
+    const category  = Object.keys(obj)[0];
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+
+    categoryFilter.appendChild(option);
+  })
+}
+
+populateCategories();
+
+function filterQuotes(event){
+  const category = event.target.value;
+  let categoryIndex;
+  quotes.forEach((obj, index) => {
+    if(Object.keys(obj)[0] == category){
+      categoryIndex = index;
+      return
+    }
+  })
+
+  quoteDisplay.innerHTML = "";
+
+  const quoteArr = quotes[categoryIndex][category];
+
+  quoteArr.forEach(quote => {
+    const para = document.createElement("p");
+    para.textContent = quote;
+    quoteDisplay.appendChild(para);
+  }) 
+  
+}
+
+categoryFilter.addEventListener("change", (event) => {
+  filterQuotes(event);
+})
