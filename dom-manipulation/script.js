@@ -36,7 +36,7 @@ function showRandomQuote(array){
 
   const randomQuote = array[categoryIndex][category][quoteIndex];
   
-  quoteDisplay.textContent = randomQuote;
+  quoteDisplay.innerHTML = randomQuote;
   
 }
 
@@ -69,10 +69,7 @@ function addQuote(){
       const newQuoteObj = {[quoteCategory]: [newQuote.value]};
       quotes.push(newQuoteObj);
 
-      console.log("New quote Added");
     }
-
-    console.log(quotes);
   }
   
 }
