@@ -179,12 +179,15 @@ categoryFilter.addEventListener("change", (event) => {
   filterQuotes(event);
 })
 
-//Setting up server simulation
+//Syncing data with the server and implementing conflict resolution
+let serverQuotes  = [];
+
 async function fetchQuotesFromServer(){
   try{
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=3");
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const data = await response.json();
-    console.log(data)
+    
+    serverQuotes = [...data];  
   
   }catch(error){
     console.log("Error fetching data");
@@ -192,12 +195,32 @@ async function fetchQuotesFromServer(){
 
 }
 
-setInterval(fetchQuotesFromServer, 10000);
+setInterval(fetchQuotesFromServer, 5000);
 
-async function postQuote(quote, author){
+let localEdits = JSON.parse(localStorage.getItem("localEdits")) || [];
+
+// function saveLocalQuote(text, author){
+//   const quote = {
+//     title: author,
+//     body: text,
+//     id: Date.now(),
+//     timestamp: Date.now()
+//   }
+
+//   if(localEdits)
+//   localEdits.push(quote);
+//   localStorage.setItem("localEdits", JSON.stringify(localEdits));
+
+// }
+
+// // saveLocalQuote("First come first serve", "Jeremy");
+
+
+
+async function postQuote(text, author){
   const quote = {
     title: author,
-    body: quote,
+    body: text,
     id: 1
   }
 
@@ -209,11 +232,26 @@ async function postQuote(quote, author){
     });
 
     const postedQuote = await response.json();
-
     console.log(postedQuote);
+
   }catch(error){
     console.log("Error posting quote")
   }
   
 
 }
+
+// postQuote("Hello beautiful people", "Mimoh");
+function syncQuotes(){
+  if(JSON.stringify(serverQuotes) !== JSON.stringify(localEdits)){
+    //conflict mgt where server data takes precedence
+    localEdits = [...serverQuotes];
+    localStorage.setItem("localEdits", JSON.stringify(localEdits));
+    console.log("New Quotes Added");
+  }else{
+    console.log("data up to date");
+  }
+   
+}
+
+setInterval(syncQuotes, 10000);
