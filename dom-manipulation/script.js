@@ -204,7 +204,7 @@ async function postQuote(quote, author){
   try{
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
-      headers: {"content-type": "application/json"},
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(quote)
     });
 
