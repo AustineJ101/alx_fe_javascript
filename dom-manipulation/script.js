@@ -252,12 +252,12 @@ function syncQuotes(){
       //conflict mgt where server data takes precedence
       localEdits = [...serverQuotes];
       localStorage.setItem("localEdits", JSON.stringify(localEdits));
-      alert("Quotes synched with server!");
+      alert("Quotes synced with server!")
     }
     
   }else{
     alert("Your data is up to date");
-  }
+  } 
    
 }
 
