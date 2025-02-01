@@ -157,7 +157,7 @@ function filterQuotes(event){
   const selectedCategory = event.target.value;
   let categoryIndex;
   quotes.forEach((obj, index) => {
-    if(Object.keys(obj)[0] == category){
+    if(Object.keys(obj)[0] == selectedCategory){
       categoryIndex = index;
       return
     }
@@ -178,3 +178,42 @@ function filterQuotes(event){
 categoryFilter.addEventListener("change", (event) => {
   filterQuotes(event);
 })
+
+//Setting up server simulation
+async function fetchQuotesFromServer(){
+  try{
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=3");
+    const data = await response.json();
+    console.log(data)
+  
+  }catch(error){
+    console.log("Error fetching data");
+  }
+
+}
+
+setInterval(fetchQuotesFromServer, 10000);
+
+async function postQuote(quote, author){
+  const quote = {
+    title: author,
+    body: quote,
+    id: 1
+  }
+
+  try{
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify(quote)
+    });
+
+    const postedQuote = await response.json();
+
+    console.log(postedQuote);
+  }catch(error){
+    console.log("Error posting quote")
+  }
+  
+
+}
