@@ -195,25 +195,25 @@ async function fetchQuotesFromServer(){
 
 }
 
-setInterval(fetchQuotesFromServer, 5000);
+setInterval(fetchQuotesFromServer, 30000);
 
 let localEdits = JSON.parse(localStorage.getItem("localEdits")) || [];
 
-// function saveLocalQuote(text, author){
-//   const quote = {
-//     title: author,
-//     body: text,
-//     id: Date.now(),
-//     timestamp: Date.now()
-//   }
+function saveLocalQuote(text, author){
+  const quote = {
+    title: author,
+    body: text,
+    id: Date.now(),
+    timestamp: Date.now()
+  }
 
-//   if(localEdits)
-//   localEdits.push(quote);
-//   localStorage.setItem("localEdits", JSON.stringify(localEdits));
+  if(localEdits)
+  localEdits.push(quote);
+  localStorage.setItem("localEdits", JSON.stringify(localEdits));
 
-// }
+}
 
-// // saveLocalQuote("First come first serve", "Jeremy");
+saveLocalQuote("First come first serve", "Jeremy");
 
 
 
@@ -244,14 +244,21 @@ async function postQuote(text, author){
 // postQuote("Hello beautiful people", "Mimoh");
 function syncQuotes(){
   if(JSON.stringify(serverQuotes) !== JSON.stringify(localEdits)){
-    //conflict mgt where server data takes precedence
-    localEdits = [...serverQuotes];
-    localStorage.setItem("localEdits", JSON.stringify(localEdits));
-    console.log("New Quotes Added");
+    const manualSync = prompt("Press 1 if you wish to leave the initial data as is or 2 to stay up to data" );
+    //Option for manual sync to leave the initial data as is.
+    if(manualSync == 1){
+      alert("Initial data maintained");
+    }else{
+      //conflict mgt where server data takes precedence
+      localEdits = [...serverQuotes];
+      localStorage.setItem("localEdits", JSON.stringify(localEdits));
+      alert("Quotes synched with server!");
+    }
+    
   }else{
-    console.log("data up to date");
+    alert("Your data is up to date");
   }
    
 }
 
-setInterval(syncQuotes, 10000);
+setInterval(syncQuotes, 60000);
